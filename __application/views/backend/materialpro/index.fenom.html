@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{$.const.THEME_URL}images/favicon.png">
+    <title>{$title}</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="{$.const.THEME_URL}plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- chartist CSS -->
+    <link href="{$.const.THEME_URL}plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
+    <link href="{$.const.THEME_URL}plugins/chartist-js/dist/chartist-init.css" rel="stylesheet">
+    <link href="{$.const.THEME_URL}plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
+    <!--This page css - Morris CSS -->
+    <link href="{$.const.THEME_URL}plugins/c3-master/c3.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{$.const.THEME_URL}css/style.css" rel="stylesheet">
+    <!-- You can change the theme colors from here -->
+    <!-- <link href="{$.const.THEME_URL}css/colors/blue.css" id="theme" rel="stylesheet"> -->
+    <link href="{$.const.THEME_URL}css/colors/blue.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar" style="background:#eef5f9;">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="">
+                        <!-- Logo icon --><b>
+                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                            <!-- Dark Logo icon -->
+                            <img src="{$.const.THEME_URL}images/logo-icon.png" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo icon -->
+                            <img src="{$.const.THEME_URL}images/logo-light-icon.png" alt="homepage" class="light-logo" />
+                        </b>
+                        <!--End Logo icon -->
+                        <!-- Logo text --><span>
+                         <!-- dark Logo text -->
+                         <img src="{$.const.THEME_URL}images/logo-text.png" alt="homepage" class="dark-logo" />
+                         <!-- Light Logo text -->    
+                         <img src="{$.const.THEME_URL}images/logo-light-text.png" class="light-logo" alt="homepage" /></span> </a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav mr-auto mt-md-0">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+                        <!-- <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li> -->
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- User profile and search -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav my-lg-0">
+                        <!-- ============================================================== -->
+                        <!-- Profile -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{$.const.THEME_URL}images/users/1.png" alt="user" class="profile-pic" /></a>
+                            <div class="dropdown-menu dropdown-menu-right scale-up">
+                                <ul class="dropdown-user">
+                                    <li>
+                                        <div class="dw-user-box">
+                                            <div class="u-img"><img src="{$.const.THEME_URL}images/users/1.png" alt="user"></div>
+                                            <div class="u-text">
+                                                <h4>Steave Jobs</h4>
+                                                <p class="text-muted">varun@gmail.com</p>
+																									<!-- <a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a> -->
+																								</div>
+                                        </div>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#" id="profile"><i class="ti-user"></i> {$language.btn_profile}</a></li>
+                                    <li><a href="#" id="chg_pwd"><i class="ti-wallet"></i> {$language.btn_change_password}</a></li>
+                                    <!-- <li><a href="#"><i class="ti-email"></i> Inbox</a></li> -->
+                                    <!-- <li role="separator" class="divider"></li> -->
+                                    <!-- <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li> -->
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#" id="logout"><i class="fa fa-power-off"></i> {$language.btn_logout}</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- Language -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+													{$languages}
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- User profile -->
+                <!-- <div class="user-profile" style="background: url({$.const.THEME_URL}images/background/user-info.jpg) no-repeat;"> -->
+                    <!-- <div class="profile-img"> <img src="{$.const.THEME_URL}images/users/1.png" alt="user" /> </div> -->
+                    <!-- <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Markarn Doe</a> -->
+                        <!-- <div class="dropdown-menu animated flipInY">  -->
+													<!-- <a href="#" id="profile" class="dropdown-item"><i class="ti-user"></i> {$language.btn_profile}</a>  -->
+													<!-- <a href="#" id="chg_pwd" class="dropdown-item"><i class="ti-wallet"></i> {$language.btn_change_password}</a>  -->
+                            <!-- <div class="dropdown-divider"></div>  -->
+													<!-- <a href="login.html" id="logout" class="dropdown-item"><i class="fa fa-power-off"></i> {$language.btn_logout}</a> </div> -->
+                    <!-- </div> -->
+                <!-- </div> -->
+                <!-- End User profile text-->
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+									{$menu}
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+            <!-- Bottom points-->
+            <!-- End Bottom points-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 col-8 align-self-center">
+                        <h3 class="text-themecolor">{$language.title}</h3>
+                        <!-- <ol class="breadcrumb"> -->
+                            <!-- <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li> -->
+                            <!-- <li class="breadcrumb-item active">Dashboard</li> -->
+                        <!-- </ol> -->
+                    </div>
+                    <!-- <div class="col-md-7 col-4 align-self-center"> -->
+                        <!-- <div class="d-flex m-t-10 justify-content-end"> -->
+                            <!-- <div class="d-flex m-r-20 m-l-10 hidden-md-down"> -->
+                                <!-- <div class="chart-text m-r-10"> -->
+                                    <!-- <h6 class="m-b-0"><small>THIS MONTH</small></h6> -->
+                                    <!-- <h4 class="m-t-0 text-info">$58,356</h4></div> -->
+                                <!-- <div class="spark-chart"> -->
+                                    <!-- <div id="monthchart"></div> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                            <!-- <div class="d-flex m-r-20 m-l-10 hidden-md-down"> -->
+                                <!-- <div class="chart-text m-r-10"> -->
+                                    <!-- <h6 class="m-b-0"><small>LAST MONTH</small></h6> -->
+                                    <!-- <h4 class="m-t-0 text-primary">$48,356</h4></div> -->
+                                <!-- <div class="spark-chart"> -->
+                                    <!-- <div id="lastmonthchart"></div> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
+                    <!-- </div> -->
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <!-- Row -->
+								<div class="content">{$content}</div>
+                <!-- Row -->
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Right sidebar -->
+                <!-- ============================================================== -->
+                <!-- .right-sidebar -->
+                <!-- ============================================================== -->
+                <!-- End Right sidebar -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer"> {$footer} </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+		<div id="shelter_language" style="display:none;">{$.php.json_encode($language)}</div>
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="{$.const.THEME_URL}plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{$.const.THEME_URL}plugins/popper/popper.min.js"></script>
+    <script src="{$.const.THEME_URL}plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="{$.const.THEME_URL}js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="{$.const.THEME_URL}js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="{$.const.THEME_URL}js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="{$.const.THEME_URL}plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="{$.const.THEME_URL}plugins/sparkline/jquery.sparkline.min.js"></script>
+    <!--URI Js-->
+		<script src="{$.const.THEME_URL}plugins/uri.js/URI.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="{$.const.THEME_URL}js/custom.js"></script>
+    <script src="{$.const.THEME_URL}js/backend.js"></script>
+		<script src="{$.const.THEME_URL}plugins/bootstrap-validator/validator.min.js"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <!-- chartist chart -->
+    <!-- <script src="{$.const.THEME_URL}plugins/chartist-js/dist/chartist.min.js"></script> -->
+    <!-- <script src="{$.const.THEME_URL}plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script> -->
+    <!--c3 JavaScript -->
+    <script src="{$.const.THEME_URL}plugins/d3/d3.min.js"></script>
+    <script src="{$.const.THEME_URL}plugins/c3-master/c3.min.js"></script>
+    <!-- Chart JS -->
+    <!-- <script src="{$.const.THEME_URL}js/dashboard1.js"></script> -->
+    <!-- ============================================================== -->
+    <!-- Style switcher -->
+    <!-- ============================================================== -->
+    <script src="{$.const.THEME_URL}plugins/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>

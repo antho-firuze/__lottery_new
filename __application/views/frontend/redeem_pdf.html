@@ -1,0 +1,189 @@
+{literal}
+<style type="text/css">
+.fontoke {
+	font-family:helvetica,arial,verdana,sans; font-size:14px;
+}
+
+table.gridtable {
+	font-family: helvetica,arial,verdana,sans;
+	font-size:12px;
+	color:#333333;
+}
+table.gridtable th {
+	font-family: helvetica,arial,verdana,sans;
+	font-size:14px;
+	padding: 8px;
+	background-color: #dedede;
+}
+table.gridtable td {
+	font-family: helvetica,arial,verdana,sans;
+	font-size:14px;
+	padding: 8px;
+	background-color: #ffffff;
+}
+</style>
+{/literal}
+
+<table class="fontoke" width="100%" style="background-color:#B1A0C7;color:#fff;">	
+	<tr>
+		<td>
+			<h1>FORMULIR PENJUALAN UNIT PENYERTAAN REKSA DANA</h1>
+		</td>
+	</tr>
+</table>
+<br/>
+<table class="fontoke" width="100%" >	
+	<tr>
+		<td valign="top" width="50%">
+			<table class="fontoke gridtable" width="100%" >	
+				<tr>
+					<td width="30%">Tanggal</td>
+					<td width="10%">:</td>
+					<td width="60%">{$smarty.now|date_format:"%e %B %Y"}</td>
+				</tr>
+				<tr>
+					<td>CIF</td>
+					<td>:</td>
+					<td>{$data.client.ClientCIF}</td>
+				</tr>
+				<tr>
+					<td>Nama</td>
+					<td>:</td>
+					<td>{$data.client.ClientName}</td>
+				</tr>
+				<tr>
+					<td>No. Telp/HP</td>
+					<td>:</td>
+					<td>{$data.client.ClientHP}</td>
+				</tr>
+				<tr>
+					<td>No. KTP/Paspor</td>
+					<td>:</td>
+					<td>____________________________________________</td>
+				</tr>
+			</table>
+			
+		</td>
+		<td valign="top" width="50%">
+			<table class="fontoke gridtable" width="100%" >
+				<tr>
+					<td width="30%">Nama Reksa Dana</td>
+					<td width="10%">:</td>
+					<td width="60%">{$data.fund.FundName}</td>
+				</tr>
+				<tr>
+					<td>Jumlah Unit Penjualan</td>
+					<td>:</td>
+					<td>____________________________________________</td>
+				</tr>
+				<tr>
+					<td>Nilai</td>
+					<td>:</td>
+					<td>____________________________________________</td>
+				</tr>
+				<tr>
+					<td>Biaya Penjualan</td>
+					<td>:</td>
+					<td>____________________________________________</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<br/><br/>
+
+<table class="fontoke" width="100%" >	
+	<tr>
+		<td valign="top" width="50%">
+			Saya/Kami bermaksud menjual unit penyertaan yang kami miliki, dana harap di transfer ke.
+		</td>
+		<td valign="top" width="50%">
+			Kolom Persetujuan
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" width="50%">
+			<table class="fontoke gridtable" width="100%" >	
+				<tr>
+					<td width="30%">Bank</td>
+					<td width="10%">:</td>
+					<td width="60%">{$data.bank.BankName}</td>
+				</tr>
+				<tr>
+					<td>No. Rekening</td>
+					<td>:</td>
+					<td>{$data.bank.AccountNo}</td>
+				</tr>
+				<tr>
+					<td>Nama Pemilik</td>
+					<td>:</td>
+					<td>{$data.bank.AccountName}</td>
+				</tr>
+			</table>	
+			
+		</td>
+		<td valign="top" width="50%">
+			<table class="fontoke gridtable" width="100%" >	
+				<tr>
+					<td width="30%">Kantor Pemasaran</td>
+					<td width="10%">:</td>
+					<td width="60%">____________________________________________</td>
+				</tr>
+				<tr>
+					<td>Nama Sales</td>
+					<td>:</td>
+					<td>____________________________________________</td>
+				</tr>
+				<tr>
+					<td>Tanggal Diterima</td>
+					<td>:</td>
+					<td>____________________________________________</td>
+				</tr>
+			</table>	
+		</td>
+	</tr>
+</table>
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<table class="fontoke" width="100%" >	
+	<tr>
+		<td width="35%" align="center">
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			____________________________________________________
+			<br/>
+			Tanda Tangan, Nama Jelas & Cap Perusahaan (Bila Ada)
+		</td>
+		<td width="30%" align="center">
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			_________________________________
+			<br/>
+			Tanda Tangan Sales & Nama Jelas.
+		</td>
+		<td width="35%" align="center">
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			____________________________________________
+			<br/>
+			Tanda Tangan Operation & Nama Jelas.
+		</td>
+	</tr>
+</table>
+
+

@@ -1,0 +1,6 @@
+{
+    "require": {
+        "fenom/fenom": "^2.11",
+        "smarty/smarty": "^3.1"
+    }
+}
