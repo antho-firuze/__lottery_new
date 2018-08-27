@@ -12,21 +12,28 @@
  * $lang['notif_sample'] = 'You have unread email'; 
  */
 
-$menu['dashboard']['name'] = 'Ringkasan'; 
-$menu['transaction']['name'] = 'Transaksi'; 
-$menu['subscribe']['name'] = 'Subscribe'; 
-$menu['redeem']['name'] = 'Redeem'; 
-$menu['performance']['name'] = 'Kinerja'; 
+$menu['dashboard']['name'] = 'Dashboard'; 
+$menu['receipt']['name'] = 'Receipt'; 
+$menu['draw']['name'] = 'Draw'; 
+$menu['master']['name'] = 'Master'; 
+$menu['mechanism']['name'] = 'Mechanism'; 
+$menu['partner']['name'] = 'Partner'; 
+$menu['store']['name'] = 'Store'; 
+$menu['prize']['name'] = 'Prize'; 
+$menu['report']['name'] = 'Report'; 
 
 $menu['menu1']['name'] = 'Menu 1'; 
 
 $page['error']['btn_home'] = 'Halaman Utama'; 
 
-$page['dashboard']['title'] = 'Ringkasan'; 
-$page['transaction']['title'] = 'Transaksi'; 
-$page['subscribe']['title'] = 'Subscribe'; 
-$page['redeem']['title'] = 'Redeem'; 
-$page['performance']['title'] = 'Kinerja'; 
+$page['dashboard']['title'] = 'Dashboard'; 
+$page['receipt']['title'] = 'Receipt'; 
+$page['draw']['title'] = 'Draw'; 
+$page['mechanism']['title'] = 'Mechanism'; 
+$page['partner']['title'] = 'Partner'; 
+$page['store']['title'] = 'Store'; 
+$page['prize']['title'] = 'Prize'; 
+$page['report']['title'] = 'Report'; 
 
 $page['login']['title'] = 'Masuk'; 
 $page['login']['txt_email'] = 'Email'; 

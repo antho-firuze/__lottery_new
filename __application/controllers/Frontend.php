@@ -5,7 +5,6 @@ class Frontend extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('frontend_model');
 		
 		/* Config: Fenom/Smarty/Twig/Blade/Volt (Template Engine for PHP) Settings */
 		$this->root_url 	= '__application/views';
@@ -16,7 +15,7 @@ class Frontend extends CI_Controller
 		define('DIR_TEMPLATE', $this->root_dir.DIRECTORY_SEPARATOR.$this->init_dir.DIRECTORY_SEPARATOR.$this->theme.DIRECTORY_SEPARATOR);
 		define('THEME_URL', BASE_URL.$this->root_url.SEPARATOR.$this->init_dir.SEPARATOR.$this->theme.SEPARATOR);
 		define('THEME_PATH', DIR_TEMPLATE);
-		$this->load->library(['xfenom','xsmarty']);
+		$this->load->library(['f','xfenom','xsmarty']);
 		/* End Template Engine for PHP */
 		
 		/* Get input from request browser */
@@ -107,7 +106,7 @@ class Frontend extends CI_Controller
 			'error_name' 	=> $this->f->lang('err_'.$errNo),
 			'error_desc' 	=> empty($message) ? $this->f->lang('errDesc_'.$errNo) : $message,
 			'message'	=> $message,
-			'url' 		=> !empty($url) ? $url : $this->setURL($this->params->lang, 'home'),
+			'url' 		=> !empty($url) ? $url : $this->f->setURL('frontend', $this->params->lang, null, 'home'),
 			'footer' 	=> '© 2018 Ayo Avram Application by simpi-pro.com'
 		]);
 	}
@@ -136,7 +135,7 @@ class Frontend extends CI_Controller
 			$icon 	= isset($v['icon']) || !empty($v['icon']) ? '<i class="'.$v['icon'].'"></i>' : '';
 			$has_child = (isset($v['child']) && !empty($v['child'])) ? 'has-arrow ' : '';
 			$class 	= isset($v['class']) || !empty($v['class']) ? 'class="'.$has_child.$v['class'].'"' : '';
-			$url 		= 'href="'.$this->setURL($this->params->lang, $v['name']).'"';
+			$url 		= 'href="'.$this->f->setURL('frontend', $this->params->lang, null, $v['name']).'"';
 			$name		= isset($lang[$v['name']]['name']) ? $lang[$v['name']]['name'] : 'noname';
 			
 			if ($k == 0)
@@ -168,12 +167,6 @@ class Frontend extends CI_Controller
 		return '';
 	}
 
-	private function setURL($lang, $page, $token = null) {
-		return BASE_URL.'frontend'
-			.'?lang='.$lang
-			.'&page='.$page;
-	}
-	
 	function getContent()
 	{
 		$lang = $this->getLanguage('page');

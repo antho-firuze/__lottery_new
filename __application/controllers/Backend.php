@@ -5,7 +5,6 @@ class Backend extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('backend_model');
 		
 		/* Config: Template Engine for PHP => Fenom/Smarty/Twig/Blade/Volt */
 		$this->root_url 	= '__application/views';
@@ -16,147 +15,68 @@ class Backend extends CI_Controller
 		define('DIR_TEMPLATE', $this->root_dir.DIRECTORY_SEPARATOR.$this->init_dir.DIRECTORY_SEPARATOR.$this->theme.DIRECTORY_SEPARATOR);
 		define('THEME_URL', BASE_URL.$this->root_url.SEPARATOR.$this->init_dir.SEPARATOR.$this->theme.SEPARATOR);
 		define('THEME_PATH', DIR_TEMPLATE);
-		$this->load->library(['f', 'xfenom','xsmarty']);
+		$this->load->library(['f','xfenom','xsmarty']);
 		/* End Template Engine for PHP */
 
-		/* Get input from request browser */
-		$this->params = (object) $this->input->get();
-		
 		// ============================================================== 
-		// Config variables
+		// Configuration variables
 		// ============================================================== 
 		$this->title = 'Ayo Avram App';
 		$this->languages = [
 			'us' => ['id'	=> 'us', 'name' => 'English', 	'idiom' => 'english', 	'icon' => 'flag-icon-us'],
 			'id' => ['id'	=> 'id', 'name' => 'Indonesia', 'idiom' => 'indonesia', 'icon' => 'flag-icon-id'],
 		];
-		$this->state = ['auth','client','admin'];
+		$this->state = ['auth','lottery'];
 		$this->page = [
 			'auth' 		=> ['login','register'], 
-			'client' 	=> ['dashboard','profile','transaction','subscribe','redeem','performance','chg_pwd'], 
-			'admin' 	=> ['dashboard','web_app','mobile_app',], 
+			'lottery' => ['dashboard','receipt','draw','mechanism','partner','store','prize','report'], 
 		];
-		$this->page_action = [
-			'login' 		=> ['register' => BASE_URL.'backend'.'?lang='.$this->params->lang.'&state=auth&page=register'],
-			'register' 	=> ['login' => BASE_URL.'backend'.'?lang='.$this->params->lang.'&state=auth&page=login'],
-		];
-		/* 
-			$this->sample_menus = [
-				[
-					'name'	=> 'Template',
-					'icon'	=> 'mdi mdi-laptop-windows',
-					'class'	=> 'has-arrow waves-effect waves-dark',
-					'url'		=> '',
-					'child' => [
-						['name'	=> 'Menu 1', 'url' => BASE_URL.'backend?page=menu1'],
-						['name'	=> 'Menu 2', 'url' => BASE_URL.'backend?page=menu2'],
-						['name'	=> 'Menu 3', 'url' => BASE_URL.'backend?page=menu3'],
-					]
-				],
-			]; 
-		*/
-		$this->menu = [
-			'client' 	=> 
-			[ 
-				[
-					'id'		=> 'sidebarnav',
-					'name'	=> 'dashboard',
-					'icon'	=> 'mdi mdi-gauge',
-					'class'	=> 'waves-effect waves-dark',
-					'child' => []
-				],[
-					'name'	=> 'transaction',
-					'icon'	=> 'mdi mdi-laptop-windows',
-					'class'	=> 'waves-effect waves-dark',
-					'child' => []
-				],[
-					'name'	=> 'subscribe',
-					'icon'	=> 'mdi mdi-laptop-windows',
-					'class'	=> 'waves-effect waves-dark',
-					'child' => []
-				],[
-					'name'	=> 'redeem',
-					'icon'	=> 'mdi mdi-laptop-windows',
-					'class'	=> 'waves-effect waves-dark',
-					'child' => []
-				],
-			],
-			'admin' 	=> 
-			[
-				[
-					'id'		=> 'sidebarnav',
-					'name'	=> 'dashboard',
-					'icon'	=> 'mdi mdi-gauge',
-					'class'	=> 'has-arrow waves-effect waves-dark',
-					'child' => []
-				],[
-					'name'	=> 'web_app',
-					'icon'	=> 'mdi mdi-laptop-windows',
-					'class'	=> 'has-arrow waves-effect waves-dark',
-					'child' => []
-				],[
-					'name'	=> 'mobile_app',
-					'icon'	=> 'mdi mdi-laptop-windows',
-					'class'	=> 'has-arrow waves-effect waves-dark',
-					'child' => []
-				],
-			],
-		];
-		$this->client_menus = [
-			[
-				'id'		=> 'sidebarnav',
-				'name'	=> 'dashboard',
-				'icon'	=> 'mdi mdi-gauge',
-				'class'	=> 'waves-effect waves-dark',
-				'child' => []
-			],[
-				'name'	=> 'transaction',
-				'icon'	=> 'mdi mdi-laptop-windows',
-				'class'	=> 'waves-effect waves-dark',
-				'child' => []
-			],[
-				'name'	=> 'subscribe',
-				'icon'	=> 'mdi mdi-laptop-windows',
-				'class'	=> 'waves-effect waves-dark',
-				'child' => []
-			],[
-				'name'	=> 'redeem',
-				'icon'	=> 'mdi mdi-laptop-windows',
-				'class'	=> 'waves-effect waves-dark',
-				'child' => []
-			],[
-				'name'	=> 'performance',
-				'icon'	=> 'mdi mdi-laptop-windows',
-				'class'	=> 'waves-effect waves-dark',
-				'child' => []
-			],
-		];
-		$this->admin_menus = [
-			[
-				'id'		=> 'sidebarnav',
-				'name'	=> 'dashboard',
-				'icon'	=> 'mdi mdi-gauge',
-				'class'	=> 'has-arrow waves-effect waves-dark',
-				'child' => []
-			],[
-				'name'	=> 'web_app',
-				'icon'	=> 'mdi mdi-laptop-windows',
-				'class'	=> 'has-arrow waves-effect waves-dark',
-				'child' => []
-			],[
-				'name'	=> 'mobile_app',
-				'icon'	=> 'mdi mdi-laptop-windows',
-				'class'	=> 'has-arrow waves-effect waves-dark',
-				'child' => []
-			],
-		];
-		
-		
-		
-		
-		
 		// ============================================================== 
-		// Checking parameters => lang
+		// => Menu Config
+		// main fields 	= id => string, name => string, icon => string, class => string, child => array()
+		// child fields = name => string
+		// ============================================================== 
+		$this->menu = [
+			'lottery' 	=> [[
+										'id'		=> 'sidebarnav',
+										'name'	=> 'dashboard',
+										'icon'	=> 'mdi mdi-gauge',
+										'class'	=> 'has-arrow waves-effect waves-dark',
+										'child' => []
+									],[
+										'name'	=> 'receipt',
+										'icon'	=> 'mdi mdi-laptop-windows',
+										'class'	=> 'has-arrow waves-effect waves-dark',
+										'child' => []
+									],[
+										'name'	=> 'draw',
+										'icon'	=> 'mdi mdi-laptop-windows',
+										'class'	=> 'has-arrow waves-effect waves-dark',
+										'child' => []
+									],[
+										'name'	=> 'master',
+										'icon'	=> 'mdi mdi-laptop-windows',
+										'class'	=> 'has-arrow waves-effect waves-dark',
+										'child' => [
+											['name'	=> 'mechanism'],
+											['name'	=> 'partner'],
+											['name'	=> 'store'],
+											['name'	=> 'prize'],
+										]
+									],[
+										'name'	=> 'report',
+										'icon'	=> 'mdi mdi-laptop-windows',
+										'class'	=> 'has-arrow waves-effect waves-dark',
+										'child' => []
+									]],
+		];
+		// ============================================================== 
+		// Get parameters & set default value 
+		// ============================================================== 
+		/* Get input from request browser */
+		$this->params = (object) $this->input->get();
+		// ============================================================== 
+		// => lang
 		// ============================================================== 
 		// if (!isset($this->params->lang) || !in_array($this->params->lang, array_column($this->languages, 'id')))
 		if (!isset($this->params->lang) || !in_array($this->params->lang, array_keys($this->languages))) {
@@ -167,12 +87,12 @@ class Backend extends CI_Controller
 		}
 		$this->languages[$this->params->lang]['default'] = true;
 		// ============================================================== 
-		// Checking parameters => state
+		// => state
 		// ============================================================== 
 		if (!isset($this->params->state) || !in_array($this->params->state, $this->state))
 			$this->throw_error();
 		// ============================================================== 
-		// Checking parameters => page
+		// => page
 		// ============================================================== 
 		if (isset($this->params->page)) {
 			if (!in_array($this->params->page, $this->page[$this->params->state]))
@@ -184,7 +104,7 @@ class Backend extends CI_Controller
 				$this->params->page = 'login';
 		}
 		// ============================================================== 
-		// Checking parameters => token
+		// => token
 		// ============================================================== 
 		if (in_array($this->params->state, ['client','admin'])) {
 			if (isset($this->params->token) || !empty($this->params->token)) {
@@ -200,18 +120,13 @@ class Backend extends CI_Controller
 			}
 		}
 		
-		// $this->login_url = $this->setURL($this->params->lang, 'auth', 'login', null);
-		// $this->home_url = $this->setURL($this->params->lang, $this->params->state, 'dashboard', $this->params->token);
-		// $this->login_url = BASE_URL.'backend'
-			// .'?lang='.$this->params->lang
-			// .'&state=auth&page=login';
-		// $this->home_url = BASE_URL.'backend'
-			// .'?lang='.$this->params->lang
-			// .'&state='.$this->params->state
-			// .'&page=dashboard'
-			// .(isset($this->params->token) ? '&token='.urlencode($this->params->token) : '');
-			
-			
+		// ============================================================== 
+		// Setting Action for Page
+		// ============================================================== 
+		$this->page_action = [
+			'login' 		=> ['register' => BASE_URL.'backend'.'?lang='.$this->params->lang.'&state=auth&page=register'],
+			'register' 	=> ['login' => BASE_URL.'backend'.'?lang='.$this->params->lang.'&state=auth&page=login'],
+		];
 		// ============================================================== 
 		// Setting companion data
 		// ============================================================== 
@@ -257,8 +172,8 @@ class Backend extends CI_Controller
 			'error_name' 	=> $this->f->lang('err_'.$errNo),
 			'error_desc' 	=> empty($message) ? $this->f->lang('errDesc_'.$errNo) : $message,
 			'message'	=> $message,
-			// 'url' 		=> !empty($url) ? $url : $this->login_url,
-			'url' 		=> !empty($url) ? $url : $this->setURL($this->params->lang, 'auth', 'login'),
+			// 'url' 		=> !empty($url) ? $url : $this->f->setURL('frontend', $this->params->lang, null, 'home'),
+			'url' 		=> !empty($url) ? $url : $this->f->setURL('backend', $this->params->lang, 'auth', 'login'),
 			'footer' 	=> '© 2018 Ayo Avram Application by simpi-pro.com'
 		]);
 	}
@@ -286,8 +201,12 @@ class Backend extends CI_Controller
 			$id 		= isset($v['id']) || !empty($v['id']) ? 'id="'.$v['id'].'"' : '';
 			$icon 	= isset($v['icon']) || !empty($v['icon']) ? '<i class="'.$v['icon'].'"></i>' : '';
 			$has_child = (isset($v['child']) && !empty($v['child'])) ? 'has-arrow ' : '';
-			$class 	= isset($v['class']) || !empty($v['class']) ? 'class="'.$has_child.$v['class'].'"' : '';
-			$url 		= 'href="'.$this->setURL($this->params->lang, $this->params->state, $v['name'], $this->params->token).'"';
+			$class 	= (isset($v['class']) || !empty($v['class'])) 
+							? 'class="'.$has_child.$v['class'].'"' 
+							: '';
+			$url 		= (isset($v['child']) && !empty($v['child'])) 
+							? ''
+							: 'href="'.$this->f->setURL('backend', $this->params->lang, $this->params->state, $v['name'], $this->params->token).'"';
 			$name		= isset($lang[$v['name']]['name']) ? $lang[$v['name']]['name'] : 'noname';
 			
 			if ($k == 0)
@@ -319,14 +238,6 @@ class Backend extends CI_Controller
 		return '';
 	}
 
-	private function setURL($lang, $state, $page, $token = null) {
-		return BASE_URL.'backend'
-			.'?lang='.$lang
-			.'&state='.$state
-			.'&page='.$page
-			.(isset($token) ? '&token='.urlencode($token) : '');
-	}
-	
 	function getContent()
 	{
 		$lang = $this->getLanguage('page');

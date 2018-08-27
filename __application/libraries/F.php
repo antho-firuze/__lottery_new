@@ -195,6 +195,8 @@ class F {
 	{
 		if (!isset($request->token) || empty($request->token))
 			return [FALSE, ['message' => F::lang('err_token_invalid')]];
+		else
+			$request->token = urldecode($request->token);
 		
 		if ($request->agent == 'android') {
 			$token = ['android_token' => $request->token];
@@ -507,6 +509,15 @@ class F {
 	function get_result()
 	{
 		$ci = &get_instance();
+		
+		/* {"filter":"is_import='1' and name like '%anonym%'"} */
+		if (isset($request->params->filter) && !empty($request->params->filter)) {
+			$ci->db->where($request->params->filter, NULL, FALSE);
+		}
+		/* {"order":"date asc, name asc"} */
+		if (isset($request->params->order) && !empty($request->params->order)) {
+			$ci->db->order_by($request->params->order);
+		}
 		if (!$qry = $ci->db->get())
 			return [FALSE, ['message' => $ci->db->error()['message']]];
 
@@ -516,12 +527,35 @@ class F {
 		return [TRUE, ['result' => $result]];
 	}
 	
-	function get_result_datatables($request)
+	function get_result_paging($request)
 	{
+		$ci = &get_instance();
+		
+		/* {"filter":"is_import='1' and name like '%anonym%'"} */
+		if (isset($request->params->filter) && !empty($request->params->filter)) {
+			$ci->db->where($request->params->filter, NULL, FALSE);
+		}
+		/* {"order":"date asc, name asc"} */
+		if (isset($request->params->order) && !empty($request->params->order)) {
+			$ci->db->order_by($request->params->order);
+		}
+		/* {"limit":"10", "offset":"0"} */
+		if (isset($request->params->limit) && !empty($request->params->limit)) {
+			$limit 		= (isset($request->params->limit) && !empty($request->params->limit))
+								? $request->params->limit : 10;
+			$offset 	= (isset($request->params->offset) && !empty($request->params->offset))
+								? $request->params->offset : 0;
+			$ci->db->limit($limit, $offset);
+		}
+		
+		if (!$qry = $ci->db->get()) {
+			return [FALSE, ['message' => $ci->db->error()['message']]];
+		}
+			
 		list($success, $return) = F::get_result();
 		
-		$res['total'] = count($return);
-		$res['rows']		= $return['result'];
+		$res['total'] = count($return['result']);
+		$res['rows']	= $return['result'];
 		if (isset($request->params->footer) && !empty($request->params->footer)) {
 			// $res['summary'] = $this->mget_rec($params, TRUE, explode(',', $request->params->footer));
 			// foreach($summary as $k => $v){
@@ -532,4 +566,31 @@ class F {
 		
 		return [TRUE, ['result' => $res]];
 	}
+
+	/*
+	 * For setting URL Address
+	 * 
+	 * backend: 	http://localhost:8080/backend?lang=id&state=auth&page=login&token=845j2h5lkj24352kjnb3545
+	 * frontend: 	http://localhost:8080/frontend?lang=id&page=home
+	 * 
+	 */
+	function setURL($path, $lang, $state = null, $page, $token = null)
+	{
+		if (!in_array($path, ['backend','frontend']))
+			return '';
+		
+		if ($path == 'backend')
+			
+			return BASE_URL.$path
+				.'?lang='.$lang
+				.'&state='.$state
+				.'&page='.$page
+				.(isset($token) ? '&token='.urlencode($token) : '');
+		else if ($path == 'frontend')
+			
+			return BASE_URL.$path
+				.'?lang='.$lang
+				.'&page='.$page;
+	}
+	
 }

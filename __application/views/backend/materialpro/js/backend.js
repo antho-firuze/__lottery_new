@@ -191,7 +191,7 @@ $(function () {
 					db_store('session', JSON.stringify(data.result));
 					var url_to = uri_path.search({
 						"lang":lang, 
-						"state":"client", 
+						"state":"lottery", 
 						"page":"dashboard",
 						"token":data.result.user.token
 					});
@@ -438,12 +438,12 @@ $(function () {
 		if (db_get('session')) {
 			var session = JSON.parse(db_get('session'));
 			var profile_img = $('img.profile-img img');
-			var profile_text = $('div.profile-text a.dropdown-toggle.u-dropdown').html(session.client.full_name);
+			// var profile_text = $('div.profile-text a.dropdown-toggle.u-dropdown').html(session.client.full_name);
 			
 			var profile_pic = $('img.profile-pic');
 			var u_img = $('ul#dropdown-user .u-img img');
-			var u_text = $('div.u-text h4').html(session.client.full_name);
-			var u_text = $('div.u-text p').html(session.client.CorrespondenceEmail);
+			// var u_text = $('div.u-text h4').html(session.client.full_name);
+			// var u_text = $('div.u-text p').html(session.client.CorrespondenceEmail);
 		}
 	});
 });

@@ -20,7 +20,10 @@
     <!--This page css - Morris CSS -->
     <link href="{$.const.THEME_URL}plugins/c3-master/c3.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{$.const.THEME_URL}css/style.css" rel="stylesheet">
+    <!-- <link href="{$.const.THEME_URL}css/style-h.css" rel="stylesheet"> -->
+    <!-- <link href="{$.const.THEME_URL}css/custom-h.css" rel="stylesheet"> -->
+    <link href="{$.const.THEME_URL}css/style-v.css" rel="stylesheet">
+    <link href="{$.const.THEME_URL}css/custom-v.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
     <!-- <link href="{$.const.THEME_URL}css/colors/blue.css" id="theme" rel="stylesheet"> -->
     <link href="{$.const.THEME_URL}css/colors/blue.css" rel="stylesheet">
@@ -47,7 +50,7 @@
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <header class="topbar" style="background:#eef5f9;">
+        <header class="topbar">
             <nav class="navbar top-navbar navbar-expand-md navbar-light">
                 <!-- ============================================================== -->
                 <!-- Logo -->
@@ -77,8 +80,19 @@
                     <!-- ============================================================== -->
                     <ul class="navbar-nav mr-auto mt-md-0">
                         <!-- This is  -->
+												<li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
                         <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
-                        <!-- <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li> -->
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item hidden-sm-down search-box">
+                            <a class="nav-link hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
+                            <form class="app-search">
+                                <input type="text" class="form-control" placeholder="Search & enter"> <a class="srh-btn"><i class="ti-close"></i></a> </form>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- Messages -->
+                        <!-- ============================================================== -->
                     </ul>
                     <!-- ============================================================== -->
                     <!-- User profile and search -->
@@ -132,16 +146,16 @@
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar">
                 <!-- User profile -->
-                <!-- <div class="user-profile" style="background: url({$.const.THEME_URL}images/background/user-info.jpg) no-repeat;"> -->
-                    <!-- <div class="profile-img"> <img src="{$.const.THEME_URL}images/users/1.png" alt="user" /> </div> -->
-                    <!-- <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Markarn Doe</a> -->
-                        <!-- <div class="dropdown-menu animated flipInY">  -->
-													<!-- <a href="#" id="profile" class="dropdown-item"><i class="ti-user"></i> {$language.btn_profile}</a>  -->
-													<!-- <a href="#" id="chg_pwd" class="dropdown-item"><i class="ti-wallet"></i> {$language.btn_change_password}</a>  -->
-                            <!-- <div class="dropdown-divider"></div>  -->
-													<!-- <a href="login.html" id="logout" class="dropdown-item"><i class="fa fa-power-off"></i> {$language.btn_logout}</a> </div> -->
-                    <!-- </div> -->
-                <!-- </div> -->
+                <div class="user-profile" style="background: url({$.const.THEME_URL}images/background/user-info.jpg) no-repeat;">
+                    <div class="profile-img"> <img src="{$.const.THEME_URL}images/users/1.png" alt="user" /> </div>
+                    <div class="profile-text"> <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Markarn Doe</a>
+                        <div class="dropdown-menu animated flipInY"> 
+													<a href="#" id="profile" class="dropdown-item"><i class="ti-user"></i> {$language.btn_profile}</a> 
+													<a href="#" id="chg_pwd" class="dropdown-item"><i class="ti-wallet"></i> {$language.btn_change_password}</a> 
+                            <div class="dropdown-divider"></div> 
+													<a href="login.html" id="logout" class="dropdown-item"><i class="fa fa-power-off"></i> {$language.btn_logout}</a> </div>
+                    </div>
+                </div>
                 <!-- End User profile text-->
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
@@ -254,9 +268,10 @@
     <!--URI Js-->
 		<script src="{$.const.THEME_URL}plugins/uri.js/URI.min.js"></script>
     <!--Custom JavaScript -->
-    <script src="{$.const.THEME_URL}js/custom.js"></script>
+    <!-- <script src="{$.const.THEME_URL}js/custom-h.js"></script> -->
+    <script src="{$.const.THEME_URL}js/custom-v.js"></script>
     <script src="{$.const.THEME_URL}js/backend.js"></script>
-		<script src="{$.const.THEME_URL}plugins/bootstrap-validator/validator.min.js"></script>
+		<!-- <script src="{$.const.THEME_URL}plugins/bootstrap-validator/validator.min.js"></script> -->
     <!-- ============================================================== -->
     <!-- This page plugins -->
     <!-- ============================================================== -->

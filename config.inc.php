@@ -23,11 +23,8 @@ define('HTTP_HOST', $http_host);
 
 /* List available domain */
 $domain = [
-	1 => 'api.ayoavram.com',
-	2 => 'app.ayoavram.com',
-	3 => 'ayoavram.com',
-	4 => 'www.ayoavram.com',
-	5 => 'localhost:8080',
+	1 => 'localhost:9090',
+	2 => 'ip_public',
 ];
 if (!in_array(HTTP_HOST, $domain))
 	$f->bare_response(FALSE, ['message' => "Domain name <strong>$http_host</strong> is not available !"]);
@@ -35,11 +32,8 @@ if (!in_array(HTTP_HOST, $domain))
 
 /* Define default path. Implement on $route['default_controller'] */
 $path = [
-	$domain[1] => 'v1',
+	$domain[1] => 'frontend',
 	$domain[2] => 'backend',
-	$domain[3] => 'frontend',
-	$domain[4] => 'frontend',
-	$domain[5] => 'frontend',
 ];
 define('PATH', $path[$http_host]);
 
@@ -47,26 +41,6 @@ define('PATH', $path[$http_host]);
 define('BASE_URL', PROTOCOL.HTTP_HOST.SEPARATOR); 
 define('JSONRPC_URL', PROTOCOL.HTTP_HOST.SEPARATOR.'jsonrpc'); 
 
-/* Cache Folder */
-// define('CACHE_FOLDER', 'var/cache');
-// if (!file_exists(CACHE_FOLDER) && !is_dir(CACHE_FOLDER)) {
-	// mkdir(CACHE_FOLDER);         
-// } 
-
-/* BACKEND CONSTANT VARIABLES */
-// define('APPS_LNK', BASE_URL.'systems');
-// define('PAGE_LNK', BASE_URL.'systems/x_page');
-// define('AUTH_LNK', BASE_URL.'systems/x_auth');
-// define('ROLE_SELECTOR_LNK', BASE_URL.'systems/x_role_selector');
-// define('LOGIN_LNK', BASE_URL.'systems/x_login');
-// define('LOGOUT_LNK', BASE_URL.'systems/x_logout');
-// define('U_CONFIG_LNK', BASE_URL.'systems/a_user_config');
-// define('SRCMENU_LNK', BASE_URL.'systems/x_srcmenu');
-// define('PROFILE_LNK', BASE_URL.'systems/x_profile');
-// define('RELOAD_LNK', BASE_URL.'systems/x_reload');
-// define('FORGOT_LNK', BASE_URL.'systems/x_forgot');
-// define('RESET_LNK', BASE_URL.'systems/x_reset');
-// define('X_INFO_LNK', BASE_URL.'systems/x_info');
-/* FRONTEND CONSTANT VARIABLES */
-// define('HOME_LNK', BASE_URL.'frontend');
-// define('INFOLST_LNK', BASE_URL.'frontend/infolist');
+/* Init TMP/CACHE Folder */
+$tmp = '__tmp';
+if (!file_exists($tmp) && !is_dir($tmp)) { mkdir($tmp); } 

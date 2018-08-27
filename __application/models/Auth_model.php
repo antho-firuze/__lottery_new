@@ -5,9 +5,11 @@ class Auth_model extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->database('cloud');
+		$this->load->database('localhost');
 		$this->config->load('auth', FALSE, TRUE);
 		
+		$this->table_user = $this->config->item('table_user');
+		$this->table_user_config = $this->config->item('table_user_config');
 		$this->forgot_token_expiration = $this->config->item('forgot_token_expiration');
 		$this->android_token_expiration = $this->config->item('android_token_expiration');
 		$this->ios_token_expiration = $this->config->item('ios_token_expiration');
@@ -29,7 +31,7 @@ class Auth_model extends CI_Model
 	 */
 	private function release_locked_account()
 	{
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			['login_try' => 0, 'account_locked_until' => null], 
 			['login_try >' => 0, 'account_locked_until <' => date('Y-m-d H:i:s')]
 		);
@@ -93,11 +95,11 @@ class Auth_model extends CI_Model
 		if (!isset($request->params->email) || empty($request->params->email))
 			return [FALSE, $this->f->lang('err_param_required', 'email')];
 		
-		$row = $this->db->get_where('mobc_login', ['email' => $request->params->email])->row();
+		$row = $this->db->get_where($this->table_user, ['email' => $request->params->email])->row();
 		if (!$row)
 			return [FALSE, ['message' => $this->f->lang('err_email_not_found')]];
 		
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			['login_try' => 0, 'account_locked_until' => null], 
 			['email' => $request->params->email]
 		);
@@ -115,30 +117,7 @@ class Auth_model extends CI_Model
 	 */
 	function get_token($token)
 	{
-		return $this->db->get_where('mobc_login', $token)->row();
-	}
-	
-	/* 
-	 * Method for get detail data account, from master_client or mobc_prospect
-	 * 
-	 * params row
-	 * 
-	 * return @success	row
-	 * 
-	 */
-	function get_client_detail($row)
-	{
-		if ($row->ClientID){
-			$r = $this->db->get_where('master_client', ['ClientID' => $row->ClientID])->row();
-			$r->email = $r->CorrespondenceEmail;
-			$r->full_name = $r->ClientName;
-			return $r;
-		} else {
-			$r = $this->db->get_where('mobc_prospect', ['CorrespondenceEmail' => $row->email])->row();
-			$r->email = $r->CorrespondenceEmail;
-			$r->full_name = ($r->NameFirst ? $r->NameFirst.' ' : '').($r->NameMiddle ? ' '.$r->NameMiddle.' ' : '').($r->NameLast ? ' '.$r->NameLast : '');
-			return $r;
-		}
+		return $this->db->get_where($this->table_user, $token)->row();
 	}
 	
  	/*
@@ -162,7 +141,7 @@ class Auth_model extends CI_Model
 		else
 			$currentTime = $request->params->time_epoch; // strtotime($request->params->time);
 		
-		$row = $this->db->get_where('mobc_login', ['email' => $request->params->email])->row();
+		$row = $this->db->get_where($this->table_user, ['email' => $request->params->email])->row();
 		if (!$row)
 			return [FALSE, ['message' => $this->f->lang('err_email_not_found')]];
 		
@@ -178,7 +157,7 @@ class Auth_model extends CI_Model
 				$update_field['account_locked_until'] = date('Y-m-d H:i:s', time() + $this->lockout_time);
 			
 			$update_field['login_try'] = $login_try;
-			$this->db->update('mobc_login', 
+			$this->db->update($this->table_user, 
 				$update_field, 
 				['email' => $row->email]
 			);
@@ -200,7 +179,7 @@ class Auth_model extends CI_Model
 			$fld = ['web_token' => $token, 'web_token_expired' => $token_exp];
 		}
 		
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			array_merge(['login_last' => date('Y-m-d H:i:s'), 'login_try' => 0], $fld), 
 			['email' => $row->email] 
 		);
@@ -210,9 +189,7 @@ class Auth_model extends CI_Model
 		$row = (object)array_intersect_key((array)$row, array_flip($fields));
 		
 		$result = (object)[];
-		$result->client = $this->get_client_detail($row);
 		$result->user = $row;
-		$result->user->full_name = $result->client->full_name;
 		$result->user->token = $token;
 		$result->user->token_exp = $token_exp;
 		$result->user->token_exp_epoch = strtotime($token_exp);
@@ -235,12 +212,12 @@ class Auth_model extends CI_Model
 			$where = ['web_token' => urldecode($request->token)];
 		}
 		
-		if (!$return = $this->db->update('mobc_login', $fld, $where)) 
+		if (!$return = $this->db->update($this->table_user, $fld, $where)) 
 			return [FALSE, ['message' => $this->db->error()['message']]];
 		else
 			return [TRUE, ['message' => '']];
 		
-		// $return = $this->db->update('mobc_login', $fld, $where);
+		// $return = $this->db->update($this->table_user, $fld, $where);
 		
 		// return [TRUE, ['message' => '']];
 	}
@@ -274,7 +251,7 @@ class Auth_model extends CI_Model
 				$update_field['account_locked_until'] = date('Y-m-d H:i:s', time() + $this->lockout_time);
 			
 			$update_field['login_try'] = $login_try;
-			$this->db->update('mobc_login', 
+			$this->db->update($this->table_user, 
 				$update_field, 
 				['email' => $row->email]
 			);
@@ -296,7 +273,7 @@ class Auth_model extends CI_Model
  	 */
 	function forgot_password_simple($request)
 	{
-		$row = $this->db->get_where('mobc_login', ['email' => $request->params->email])->row();
+		$row = $this->db->get_where($this->table_user, ['email' => $request->params->email])->row();
 		if (!$row)
 			return [FALSE, ['message' => $this->f->lang('err_email_not_found')]];
 		
@@ -305,7 +282,7 @@ class Auth_model extends CI_Model
 		// generate random password
 		$new_password = $this->f->gen_pwd($this->min_password_length);
 		$new_password_enc = md5($new_password);
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			['password' => $new_password_enc], 
 			['email' => $row->email]
 		);
@@ -338,7 +315,7 @@ class Auth_model extends CI_Model
  	 */
 	function forgot_password($request)
 	{
-		$row = $this->db->get_where('mobc_login', ['email' => $request->params->email])->row();
+		$row = $this->db->get_where($this->table_user, ['email' => $request->params->email])->row();
 		if (!$row)
 			return [FALSE, ['message' => $this->f->lang('err_email_not_found')]];
 		
@@ -346,7 +323,7 @@ class Auth_model extends CI_Model
 
 		$token = $this->f->gen_token();
 		$token_exp = date('Y-m-d H:i:s', time() + $this->forgot_token_expiration);
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			['forgot_token' => $token, 'forgot_token_expired' => $token_exp], 
 			['email' => $row->email]
 		);
@@ -381,7 +358,7 @@ class Auth_model extends CI_Model
  	 */
 	function reset_password($request)
 	{
-		$row = $this->db->get_where('mobc_login', ['forgot_token' => $request->params->token])->row();
+		$row = $this->db->get_where($this->table_user, ['forgot_token' => $request->params->token])->row();
 		if (!$row)
 			return [FALSE, ['message' => $this->f->lang('err_token_invalid')]];
 		
@@ -395,7 +372,7 @@ class Auth_model extends CI_Model
 			return [FALSE, ['message' => $message]];
 		
 		$new_password_enc = $message;
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			['forgot_token' => null, 'forgot_token_expired' => null, 'password' => $new_password_enc], 
 			['email' => $row->email]
 		);
@@ -431,7 +408,7 @@ class Auth_model extends CI_Model
 		if (!$success)
 			return [FALSE, $return];
 		
-		$row = $this->db->get_where('mobc_login', ['email' => $request->params->email])->row();
+		$row = $this->db->get_where($this->table_user, ['email' => $request->params->email])->row();
 		if (!$row)
 			return [FALSE, ['message' => $this->f->lang('err_email_not_found')]];
 		
@@ -448,7 +425,7 @@ class Auth_model extends CI_Model
 			
 			$new_password_enc = $message;
 		}
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			['password' => $new_password_enc], 
 			['email' => $request->params->email]
 		);
@@ -501,7 +478,7 @@ class Auth_model extends CI_Model
 				$update_field['account_locked_until'] = date('Y-m-d H:i:s', time() + $this->lockout_time);
 			
 			$update_field['login_try'] = $login_try;
-			$this->db->update('mobc_login', 
+			$this->db->update($this->table_user, 
 				$update_field, 
 				['email' => $row->email]
 			);
@@ -515,7 +492,7 @@ class Auth_model extends CI_Model
 			return [FALSE, ['message' => $message]];
 		
 		$new_password_enc = $message;
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			['login_try' => 0, 'password' => $new_password_enc], 
 			['email' => $row->email]
 		);
@@ -554,65 +531,15 @@ class Auth_model extends CI_Model
 		
 		// #1: 
 		// ==>
-		// Check first on table mobc_login 
+		// Check first on table_user 
 		// if email exists, they may be real client or may be prospect client
 		// <==
-		$row = $this->db->get_where('mobc_login', ['email' => $request->params->email])->row();
+		$row = $this->db->get_where($this->table_user, ['email' => $request->params->email])->row();
 		if ($row){
 			if ($row->is_need_activate)
 				return [FALSE, ['message' => $this->f->lang('err_email_has_register_not_active')]];
 			
 			return [FALSE, ['message' => $this->f->lang('err_email_has_register')]];
-		}
-		
-		// #2: 
-		// ==>
-		// And then check on table master_client 
-		// if email exists, they must be real client. 
-		// <==
-		$row = $this->db->get_where('master_client', ['CorrespondenceEmail' => $request->params->email])->row();
-		if ($row){
-			$new_password = $this->f->gen_pwd($this->min_password_length);
-			list($success, $message) = $this->is_valid_password($new_password);
-			if (!$success)
-				return [FALSE, ['message' => $message]];
-			
-			$new_password_enc = $message;
-			$token = $this->f->gen_token();
-			$this->db->insert('mobc_login', 
-				[
-					'simpiID' => 812, 
-					'email' => $row->CorrespondenceEmail, 
-					'password' => $new_password_enc,
-					'forgot_token' => $token,
-					'is_need_activate' => 1,
-				]
-			);
-			
-			$header = (object)[];
-			$header->from = $this->config->item('system_email');
-			$header->to = $row->email;
-			$header->subject = $this->f->lang('email_subject_register');
-			$message = $this->f->lang('email_body_register', 
-										[
-											'{name}' => $row->ClientName, 
-											'{email}' => $this->email,
-											'{new_password}' => $new_password,
-											'{token}' => $token,
-											'{domain_frontend}' => $this->domain_frontend
-										]);
-
-			list($success, $message) = $this->f->send_mail($header, $message);
-			// if (!$success)
-				// return [FALSE, $message];
-
-			return [TRUE, ['message' => $this->f->lang('success_register')]];
-		} else {
-			// they claim existing account
-			// but not exists on table master_client
-			// we should point them to ask to cs
-			if ($request->params->account == 'old')
-				return [FALSE, ['message' => $this->f->lang('err_old_client_lost_email')]];
 		}
 		
 		if (!$request->params->phone)
@@ -624,21 +551,6 @@ class Auth_model extends CI_Model
 		if (!$request->params->name_last)
 			return [FALSE, ['message' => $this->f->lang('err_param_required', 'name_last')]];
 		
-		// #3: 
-		// ==>
-		// If not exists on table mobc_login & master_client
-		// then insert into table mobc_prospect & mobc_login without ClientID & is_need_activate is true
-		// <==
-		$this->db->insert('mobc_prospect', 
-			[
-				'simpiID' => 812, 
-				'CorrespondenceEmail' => $request->params->email, 
-				'CorrespondencePhone' => $request->params->phone, 
-				'NameFirst' => $request->params->name_first,
-				'NameLast' => $request->params->name_last,
-			]
-		);
-		
 		$new_password = $this->f->gen_pwd($this->min_password_length);
 		list($success, $message) = $this->is_valid_password($new_password);
 		if (!$success)
@@ -646,9 +558,8 @@ class Auth_model extends CI_Model
 		
 		$new_password_enc = $message;
 		$token = $this->f->gen_token();
-		$this->db->insert('mobc_login', 
+		$this->db->insert($this->table_user, 
 			[
-				'simpiID' => 812, 
 				'email' => $request->params->email, 
 				'password' => $new_password_enc,
 				'forgot_token' => $token,
@@ -687,11 +598,11 @@ class Auth_model extends CI_Model
  	 */
 	function activation($request)
 	{
-		$row = $this->db->get_where('mobc_login', ['forgot_token' => $request->token])->row();
+		$row = $this->db->get_where($this->table_user, ['forgot_token' => $request->token])->row();
 		if (!$row)
 			return [FALSE, ['message' => $this->f->lang('err_activate_account')]];
 		
-		$this->db->update('mobc_login', 
+		$this->db->update($this->table_user, 
 			['is_need_activate' => 0, 'forgot_token' => null],
 			['email' => $row->email]
 		);
