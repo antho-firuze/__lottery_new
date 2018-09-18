@@ -195,8 +195,8 @@ class F {
 	{
 		if (!isset($request->token) || empty($request->token))
 			return [FALSE, ['message' => F::lang('err_token_invalid')]];
-		else
-			$request->token = urldecode($request->token);
+		// else
+			// $request->token = urldecode($request->token);
 		
 		if ($request->agent == 'android') {
 			$token = ['android_token' => $request->token];
@@ -540,13 +540,27 @@ class F {
 			$ci->db->order_by($request->params->order);
 		}
 		/* {"limit":"10", "offset":"0"} */
+		$limit 	= 10;
+		$offset = 0;
+		
+		$limit 	= (isset($request->params->limit) && !empty($request->params->limit))
+					? $request->params->limit : $limit;
+		$offset = (isset($request->params->offset) && !empty($request->params->offset))
+							? $request->params->offset : $offset;
+
+		$limit 	= (isset($request->params->length) && !empty($request->params->length))
+					? $request->params->length : $limit;
+		$offset = (isset($request->params->start) && !empty($request->params->start))
+							? $request->params->start : $offset;
+
+		
 		if (isset($request->params->limit) && !empty($request->params->limit)) {
 			$limit 		= (isset($request->params->limit) && !empty($request->params->limit))
 								? $request->params->limit : 10;
 			$offset 	= (isset($request->params->offset) && !empty($request->params->offset))
 								? $request->params->offset : 0;
-			$ci->db->limit($limit, $offset);
 		}
+		$ci->db->limit($limit, $offset);
 		
 		if (!$qry = $ci->db->get()) {
 			return [FALSE, ['message' => $ci->db->error()['message']]];
